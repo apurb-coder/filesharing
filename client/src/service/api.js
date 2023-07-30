@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const URL = process.env.REACT_APP_BACKEND_URL;
+const URL = "https://filesharing-backend-s4z0.onrender.com";
 export const uploadFile=async(data)=>{
     try{
         const response= await axios.post(`${URL}/upload`,data);
