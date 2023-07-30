@@ -9,6 +9,7 @@ const App = () => {
 
   const [file,setFile]=useState('')
   const [downloadUrl, setDownloadUrl]=useState('')
+  const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef=useRef();
   const onClickUpload=()=>{
     // console.log(fileInputRef.current)
@@ -24,8 +25,16 @@ const App = () => {
 
         try {
           // Call the uploadFile function to upload the file to the backend
-          const response = await uploadFile(data);
-          setDownloadUrl(response.path)
+          const response = await uploadFile(data, (progressEvent) => {
+            // Handle progress event here if needed (optional)
+            const progress = Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100
+            );
+            setUploadProgress(progress);
+          });
+          setUploadProgress(100); // Set progress to 100% after upload is complete
+          setDownloadUrl(response.path);
+
           // Do something with the response from the server if needed
         } catch (error) {
           // Error handling (if any)
@@ -52,7 +61,7 @@ const App = () => {
   
 
   return (
-    <div className="container">
+    <div className="Container">
       <img src={imgLink} alt="sideimage"></img>
       <div className="wrapper">
         <h1>File Sharing Website</h1>
@@ -70,6 +79,20 @@ const App = () => {
           style={{ display: "none" }}
           onChange={(e) => setFile(e.target.files[0])}
         />
+        {/* Bootstrap Progress Bar */}
+        <div className="progress" style={{ width: "140px", height: "20px" }}>
+          <div
+            className="progress-bar custom-progress-bar"
+            role="progressbar"
+            style={{ width: `${uploadProgress}%` }}
+            aria-valuenow={uploadProgress}
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            {uploadProgress}% Complete
+          </div>
+        </div>
+        {/* Bootstrap Progress Bar */}
         {/* <a href={downloadUrl} target='_blank'>{downloadUrl}</a> */}
         <div className="copy-text">
           <input
