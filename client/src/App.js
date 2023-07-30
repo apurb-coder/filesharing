@@ -8,6 +8,7 @@ import imgLink from './image/luffy.jpg'
 const App = () => {
 
   const [file,setFile]=useState('')
+  const [revealProgressBar,setRevealProgressBar]=useState('none');
   const [downloadUrl, setDownloadUrl]=useState('')
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef=useRef();
@@ -19,11 +20,14 @@ const App = () => {
   useEffect(() => {
     const getImage = async () => {
       if (file) {
-        const data = new FormData();
-        data.append("name", file.name);
-        data.append("file", file);
+        const data = new FormData();// formData is used to store the file content
+        data.append("name", file.name);//file.name contain the file name
+        data.append("file", file);// file is a useState variable which has the file content
+        console.log(data);
 
         try {
+          //revealing progress bar as upload going to start
+          setRevealProgressBar('');
           // Call the uploadFile function to upload the file to the backend
           const response = await uploadFile(data, (progressEvent) => {
             // Handle progress event here if needed (optional)
@@ -80,7 +84,14 @@ const App = () => {
           onChange={(e) => setFile(e.target.files[0])}
         />
         {/* Bootstrap Progress Bar */}
-        <div className="progress" style={{ width: "140px", height: "20px" }}>
+        <div
+          className="progress"
+          style={{
+            width: "140px",
+            height: "20px",
+            display: revealProgressBar,
+          }}
+        >
           <div
             className="progress-bar custom-progress-bar"
             role="progressbar"
@@ -89,7 +100,7 @@ const App = () => {
             aria-valuemin="0"
             aria-valuemax="100"
           >
-            {uploadProgress}% Complete
+            <span style={{ color: "black" }}>{uploadProgress}% Complete</span>
           </div>
         </div>
         {/* Bootstrap Progress Bar */}
