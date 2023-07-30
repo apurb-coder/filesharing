@@ -16,7 +16,7 @@ router.post('/upload' ,upload.single('file') ,async(req,res)=>{
     }
     try{
         const file= await File.create(fileObj);//saving file in the database
-        res.status(200).json({path: `${process.env.DOWNLOAD_URL}/files/${file._id}`})
+        res.status(200).json({path: `${process.env.DOWNLOAD_URL_BACKEND_LINK}/files/${file._id}`})
     }
     catch(error){
         console.log(error.message)
