@@ -1,3 +1,32 @@
+/*
+metadata of the files is stored in the mongoDB.
+uploaded files is stored in the server.
+we download the files from the server.
+
+
+here we are using a middleware named multer to handle our uploads,
+multer basically manupulates the request body send by our front-end, and add a file object in the request body. 
+the file object contains the metadata of the file. And that metadata we will be storing in the mongoDB.
+
+metadata of file example:
+file: {
+    fieldname: 'file',
+    originalname: 'luffy_gear_5_by_xavierjvg_df4256z.png',
+    encoding: '7bit',
+    mimetype: 'image/png',
+    destination: 'uploads',
+    filename: 'e28a86214069101043491497be2aeeab',
+    path: 'uploads\\e28a86214069101043491497be2aeeab',
+    size: 2860351
+  }
+
+here the path field stores the path of the file stored in the server.
+
+when downloading:  we use the mongoDB to get this path field data to download from the server
+
+*/
+
+
 import express from 'express';
 import upload from '../middleware/upload.js';
 import File from '../models/file.js';// importing the schema of table
